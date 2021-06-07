@@ -6,7 +6,7 @@
 #include "driver/gpio.h"
 /*==================[ Definiciones ]===================================*/
 #define TIEMPO_NO_VALIDO   0
-
+int CrearTareaDestello = 0; 
 typedef enum
 {
     ALTO,

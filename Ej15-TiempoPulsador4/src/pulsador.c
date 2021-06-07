@@ -130,6 +130,7 @@ static void botonLiberado()
     gpio_set_level( SALIDA_PRUEBA, 0 );         //para tener una referencia en el debug
     pulsadorA.tiempoAlto    = conteoTicksActuales;
     pulsadorA.diferenciaTiempo  = pulsadorA.tiempoAlto - pulsadorA.tiempoBajo; //Da el tiempo que el pulsador estuvo en estado alto
+    CrearTareaDestello = 1; // Para usar de referencia al momento de crear la tarea en el main.c
 }
 
 void tareaPulsador( void* taskParmPtr )

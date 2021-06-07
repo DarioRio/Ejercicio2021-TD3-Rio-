@@ -20,7 +20,7 @@ Año: 2021
 #define PROCESADORB 1
 
 void tareaDestello( void* taskParmPtr ); //Prototipo de la función de la tarea
-
+TaskHandle_t xHandle1 = NULL;           ///Puntero a la tarea, lo apuntamos a nulo
 void app_main()
 {
     // Crear tarea en freeRTOS
@@ -28,22 +28,29 @@ void app_main()
     // En caso contrario devuelve pdFAIL.
     inicializarPulsador();
 
-    BaseType_t res = xTaskCreatePinnedToCore(
+    
+    if (CrearTareaDestello == 1)
+    {
+          BaseType_t res = xTaskCreatePinnedToCore(
     	tareaDestello,                     	// Funcion de la tarea a ejecutar
         "tareaDestello",   	                // Nombre de la tarea como String amigable para el usuario
         configMINIMAL_STACK_SIZE, 		// Cantidad de stack de la tarea
         NULL,                          	// Parametros de tarea
         tskIDLE_PRIORITY+1,         	// Prioridad de la tarea -> Queremos que este un nivel encima de IDLE
-        NULL,                          		// Puntero a la tarea creada en el sistema
+        &xHandle1,                  //Puntero a la tarea, me va permitir suspenderla o eliminarla
         PROCESADORA
     );
-
-    // Gestion de errores
+    CrearTareaDestello = 0;
+     // Gestion de errores
 	if(res == pdFAIL)
 	{
 		printf( "Error al crear la tarea.\r\n" );
 		while(true);					// si no pudo crear la tarea queda en un bucle infinito
 	}
+    }
+    
+  
+   
 }
 
 // Implementacion de funcion de la tarea
@@ -56,7 +63,7 @@ void tareaDestello( void* taskParmPtr )
     TickType_t dif;
 
     // ---------- Bucle infinito --------------------------
-    while( true )
+   // while( true )
     {
         dif = obtenerDiferencia();
 
@@ -71,6 +78,11 @@ void tareaDestello( void* taskParmPtr )
         {
             vTaskDelay( T_ESPERA );
         }
-
+             //Borra la tarea usando el handle
+            if( xHandle1 != NULL )      //Nos aseguramos de que no sea NULL para que no elimine la tarea actual
+            {
+            vTaskDelete( xHandle1 );    //Elimina la tarea /con el supend la suspendo en vez de eliminarla
+            xHandle1 = NULL;
+            }
     }
 }
