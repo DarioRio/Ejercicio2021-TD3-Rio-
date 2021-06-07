@@ -1,3 +1,11 @@
+/*
+Ejercicio N°: 17
+Alumono: Darío Río
+Carrera: Ing. Electrónica
+Curso: 5to
+Año: 2021
+Clase N°: 9 segunda parte
+*/
 #include <stdio.h>
 #include <stdint.h>
 #include "freertos/FreeRTOS.h"
