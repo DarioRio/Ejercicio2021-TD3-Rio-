@@ -42,11 +42,7 @@ void app_main()
     {
         if (gpio_get_level(PULSADOR))
         {
-            //Borra la tarea usando el handle
-            if( xHandle1 != NULL )      //Nos aseguramos de que no sea NULL para que no elimine la tarea actual
-            {
-            vTaskDelete( xHandle1 );    //Elimina la tarea /con el supend la suspendo en vez de eliminarla
-            xHandle1 = NULL;
+             
             }
         }
         gpio_set_level(SALIDA1, 1);
