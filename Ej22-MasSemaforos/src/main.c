@@ -8,7 +8,7 @@
 #include "freertos/semphr.h" //librería para el uso de semaforos
 
 #define SALIDA1     GPIO_NUM_25
-#define SALIDA2     GPIO_NUM_26
+#define SALIDA2     GPIO_NUM_27
 #define T_ESPERA_MS  40
 #define T_ESPERA     pdMS_TO_TICKS(T_ESPERA_MS)
 #define PROCESADORA 0
@@ -53,7 +53,7 @@ void app_main()
 }
 
 // Implementacion de funcion de la tarea led1 y led2
-void tareaDestello1( void* taskParmPtr )
+void tareaDestello( void* taskParmPtr )
 {
     // ---------- Configuraciones 1 ------------------------------
     gpio_pad_select_gpio(SALIDA1);
@@ -65,17 +65,17 @@ void tareaDestello1( void* taskParmPtr )
     // ---------- Bucle infinito --------------------------
     while( true )
     {
-       if(xSemaphoreTake( semaforo , portMAX_DELAY) == pdTRUE)
-        {
-        gpio_set_level( SALIDA1, 1 );
-        vTaskDelay( LED_ON );
-        gpio_set_level( SALIDA1, 0 );
-        }
-        else
+       if(xSemaphoreTake( semaforo , 50 ) == pdTRUE)
         {
         gpio_set_level( SALIDA2, 1 );
         vTaskDelay( LED_ON );
         gpio_set_level( SALIDA2, 0 );   
+        }
+        else
+        {
+        gpio_set_level( SALIDA1, 1 );
+        vTaskDelay( LED_ON );
+        gpio_set_level( SALIDA1, 0 );   
         }
 
     }
